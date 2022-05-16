@@ -1,0 +1,56 @@
+<script>
+// ajax query data and time from server
+
+
+var xmlHttp;
+function srvTime(){
+    try {
+        //FF, Opera, Safari, Chrome
+        xmlHttp = new XMLHttpRequest();
+    }
+    catch (err1) {
+        //IE
+        try {
+            xmlHttp = new ActiveXObject('Msxml2.XMLHTTP');
+        }
+        catch (err2) {
+            try {
+                xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');
+            }
+            catch (eerr3) {
+                //AJAX not supported, use CPU time.
+                alert("AJAX not supported");
+            }
+        }
+    }
+    xmlHttp.open('HEAD',window.location.href.toString(),false);
+    xmlHttp.setRequestHeader("Content-Type", "text/html");
+    xmlHttp.send('');
+    return xmlHttp.getResponseHeader("Date");
+}
+
+//convert format and logic change date 
+
+var st = srvTime();
+var date = "";
+date = new Date(st);
+let arr_month=["01","02","03","04","05","06","07","08","09","10","11","12"];
+let yearz = date.getFullYear();
+let monthz = date.getMonth();
+let char_month = arr_month[monthz];
+let dayz = date.getDate();
+let char_days="";
+char_days = (dayz < 10) ? '01' :
+  (dayz >= 10 && dayz < 20) ? '10' :
+  (dayz >= 20 && dayz <= 31) ? '20' :
+  '-';
+let put_date = char_days+"."+char_month+"."+yearz+"г.";
+
+//dynamic render DIV who contained date
+
+let articleDiv = document.querySelector("p.vid_0_1077541_7971481_11773170");
+let elem = document.createElement("strong");
+let elemText = document.createTextNode(put_date);
+elem.appendChild(elemText);
+articleDiv.appendChild(elem);
+</script>
